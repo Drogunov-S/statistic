@@ -1,13 +1,28 @@
 package ru.drogunov.reader;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import ru.drogunov.entity.Element;
+import java.io.IOException;
 
 public interface Reader {
+    String getPathToFile();
 
-    int getSize();
+    boolean hasNext() throws IOException;
 
-    Element get(int index);
+    void beginArray() throws IOException;
 
-    JsonNode getJsonNode(int index);
+    void endArray() throws IOException;
+
+    void beginObject() throws IOException;
+
+    void endObject() throws IOException;
+
+    void skipField() throws IOException;
+
+    String nextName() throws IOException;
+
+    String getString() throws IOException;
+
+    Long getLong() throws IOException;
+
+    //TODO Подумать над выбросом
+    void close() throws IOException;
 }

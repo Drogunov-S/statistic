@@ -17,8 +17,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
     implementation("com.carrotsearch:hppc:0.9.1")
     implementation("org.apache.commons:commons-collections4:4.4")
-
-
+    implementation("com.google.code.gson:gson:2.10.1")
 }
 
 tasks.test {
