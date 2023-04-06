@@ -17,7 +17,6 @@ public class Main {
         String input = in.readLine();
         while (!input.equalsIgnoreCase("exit")) {
             System.out.println("Анализ файла.");
-            memory();
             ReaderFactory readerFactory = new ReaderFactoryImp();
             StatisticServiceImp statisticService = new StatisticServiceImp(readerFactory);
             Statistic statistics;
@@ -25,22 +24,11 @@ public class Main {
                 statistics = statisticService.getStatistics(input);
                 System.out.println("Анализ завершён.");
                 System.out.println(statistics);
-                memory();
             } catch (Exception e) {
                 System.out.println("Ошибка: " + e.getMessage());
             }
             System.out.println("Введите путь к новому файлу или \"Exit\" для выхода: ");
             input = in.readLine();
         }
-    }
-
-    public static void memory() {
-        Runtime runtime = Runtime.getRuntime();
-        System.out.println("///////////////////////////////////////");
-        System.out.printf("TOTAL %d, MAX: %d FREE: %d%n",
-                runtime.totalMemory() / 1048576,
-                runtime.maxMemory() / 1048576,
-                runtime.freeMemory() / 1048576);
-        System.out.println("///////////////////////////////////////");
     }
 }
