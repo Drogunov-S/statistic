@@ -2,6 +2,8 @@ package ru.drogunov.service;
 
 import ru.drogunov.entity.Statistic;
 import ru.drogunov.reader.Reader;
+import ru.drogunov.reader.ReaderCsv;
+import ru.drogunov.reader.ReaderFactory;
 import ru.drogunov.reader.ReaderJsonGson;
 
 import java.io.IOException;
@@ -11,18 +13,20 @@ import java.util.Map;
 
 import static java.util.Objects.nonNull;
 
-public class StatisticService {
-    private final Reader reader;
+public class StatisticServiceImp {
+    private Reader reader;
+    private final ReaderFactory readerFactory;
+    private String pathToFile;
 
-    private final String pathToFile;
-
-    public StatisticService(Reader reader) {
-        this.reader = reader;
-        this.pathToFile = reader.getPathToFile();
+    public StatisticServiceImp(ReaderFactory readerFactory) {
+        this.readerFactory = readerFactory;
     }
 
 
-    public Statistic getStatistics() throws IOException {
+    public Statistic getStatistics(String pathToFile) throws IOException {
+        this.pathToFile = pathToFile;
+        reader = readerFactory.getReader(pathToFile);
+
         reader.beginArray();
         Statistic statistic = process();
         reader.endArray();
@@ -79,8 +83,7 @@ public class StatisticService {
     private long counterDuplicate(String group, String type) throws IOException {
         long counter = 0L;
 
-        Reader readerInner = new ReaderJsonGson(pathToFile);
-
+        Reader readerInner = readerFactory.getReader(pathToFile);
 
         readerInner.beginArray();
         for (int i = 0; readerInner.hasNext(); i++) {

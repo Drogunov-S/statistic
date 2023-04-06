@@ -1,21 +1,20 @@
 package ru.drogunov;
 
 import ru.drogunov.entity.Statistic;
-import ru.drogunov.reader.Reader;
-import ru.drogunov.reader.ReaderJsonJackson;
-import ru.drogunov.service.StatisticService;
+import ru.drogunov.reader.ReaderFactory;
+import ru.drogunov.service.StatisticServiceImp;
 
 import java.io.IOException;
 
 public class Start {
 
     static String fileJson = "/home/sergey/Загрузки/Telegram Desktop/tz/out.json";
-    static String fileCsv = "/media/sergey/dev/IDEA/IdeaProjects/statistic/src/main/resources/out.json";
+    static String fileCsv = "/home/sergey/Загрузки/Telegram Desktop/tz/out.csv";
     public static void main(String[] args) throws IOException {
         memory();
-        Reader reader = new ReaderJsonJackson(fileJson);
-        StatisticService statisticService = new StatisticService(reader);
-        Statistic statistics = statisticService.getStatistics();
+        ReaderFactory readerFactory = new ReaderFactory();
+        StatisticServiceImp statisticService = new StatisticServiceImp(readerFactory);
+        Statistic statistics = statisticService.getStatistics(fileJson);
         System.out.println(statistics);
         memory();
     }

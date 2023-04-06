@@ -32,7 +32,7 @@ public class ReaderJsonJackson implements Reader {
 //            hasNext();
 //        }
         if (jsonToken == JsonToken.END_ARRAY) {
-            JsonToken checkNext = jsonParser.nextToken();
+            jsonParser.nextToken();
             return jsonParser.hasCurrentToken();
         }
         return jsonParser.hasCurrentToken();
@@ -45,7 +45,7 @@ public class ReaderJsonJackson implements Reader {
             jsonParser.nextToken();
             jsonParser.nextToken();
         } else {
-            JsonToken jsonToken = jsonParser.nextToken();
+            jsonParser.nextToken();
         }
     }
 
@@ -61,7 +61,7 @@ public class ReaderJsonJackson implements Reader {
 
     @Override
     public void endObject() throws IOException {
-        JsonToken jsonToken = jsonParser.nextToken();
+        jsonParser.nextToken();
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ReaderJsonJackson implements Reader {
     @Override
     public String nextName() throws IOException {
         String fieldName = jsonParser.getCurrentName();
-        JsonToken jsonToken = jsonParser.nextToken();
+        jsonParser.nextToken();
         return fieldName;
     }
 
@@ -86,7 +86,7 @@ public class ReaderJsonJackson implements Reader {
     @Override
     public Long getLong() throws IOException {
         long longValue = jsonParser.getLongValue();
-        JsonToken jsonToken = jsonParser.nextToken();
+        jsonParser.nextToken();
         return longValue;
     }
 
