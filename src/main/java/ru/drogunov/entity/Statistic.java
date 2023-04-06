@@ -2,6 +2,7 @@ package ru.drogunov.entity;
 
 import java.math.BigInteger;
 import java.util.Map;
+import java.util.Objects;
 
 public class Statistic {
     private long duplicates;
@@ -19,18 +20,15 @@ public class Statistic {
         this.maxWeight = maxWeight;
     }
 
-    //TODO Сделать конструктор
-
-
     @Override
     public String toString() {
-        return "/////////////////////////////\n" +
+        return "\n" +
                 "Statistic:\n" +
                 "duplicates=" + duplicates +
                 "\n" + printSumWeightByGroup() +
                 ",\nminWeight=" + minWeight +
                 ",\nmaxWeight=" + maxWeight +
-                "\n/////////////////////////////";
+                "\n";
     }
 
     private String printSumWeightByGroup() {
@@ -40,48 +38,25 @@ public class Statistic {
                 .append("|\t\t")
                 .append("Sum\n")
                 .append("--------------------------\n");
-        this.sumWeightInGroup.forEach((group, bigInteger) -> {
-            stringBuilder
-                    .append("\t")
-                    .append(group)
-                    .append(": ")
-                    .append(bigInteger.toString())
-                    .append(";")
-                    .append("\n");
-        });
+        this.sumWeightInGroup.forEach((group, bigInteger) -> stringBuilder
+                .append("\t")
+                .append(group)
+                .append(": ")
+                .append(bigInteger.toString())
+                .append(";")
+                .append("\n"));
         return stringBuilder.toString();
     }
-
-    public long getDuplicates() {
-        return duplicates;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Statistic statistic = (Statistic) o;
+        return duplicates == statistic.duplicates && minWeight == statistic.minWeight && maxWeight == statistic.maxWeight && Objects.equals(sumWeightInGroup, statistic.sumWeightInGroup);
     }
 
-    public void setDuplicates(long duplicates) {
-        this.duplicates = duplicates;
+    @Override
+    public int hashCode() {
+        return Objects.hash(duplicates, sumWeightInGroup, minWeight, maxWeight);
     }
-
-    public Map<String, BigInteger> getSumWeightInGroup() {
-        return sumWeightInGroup;
-    }
-
-    public void setSumWeightInGroup(Map<String, BigInteger> sumWeightInGroup) {
-        this.sumWeightInGroup = sumWeightInGroup;
-    }
-
-    public long getMinWeightCsv() {
-        return minWeight;
-    }
-
-    public void setMinWeightCsv(long minWeightCsv) {
-        this.minWeight = minWeightCsv;
-    }
-
-    public long getMaxWeightJson() {
-        return maxWeight;
-    }
-
-    public void setMaxWeightJson(long maxWeightJson) {
-        this.maxWeight = maxWeightJson;
-    }
-
 }

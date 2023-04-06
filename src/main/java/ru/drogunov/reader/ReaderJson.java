@@ -7,12 +7,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ReaderJsonJackson implements Reader {
+public class ReaderJson implements Reader {
 
     private final String pathToFile;
     private final JsonParser jsonParser;
 
-    public ReaderJsonJackson(String pathToFile) throws IOException {
+    public ReaderJson(String pathToFile) throws IOException {
         JsonFactory jsonFactory = new JsonFactory();
         this.pathToFile = pathToFile;
         this.jsonParser = jsonFactory.createParser(new FileReader(pathToFile));
@@ -26,33 +26,22 @@ public class ReaderJsonJackson implements Reader {
 
     @Override
     public boolean hasNext() throws IOException {
-        JsonToken jsonToken = jsonParser.getCurrentToken();
-//        if (jsonToken == JsonToken.START_ARRAY) {
-        //TODO Не работает с вложенными массивами
-//            hasNext();
-//        }
-        if (jsonToken == JsonToken.END_ARRAY) {
+        JsonToken currentToken = jsonParser.getCurrentToken();
+        if (currentToken == null) {
+            currentToken = jsonParser.nextToken();
+        }
+        if (currentToken==JsonToken.START_ARRAY) {
+            currentToken = jsonParser.nextToken();
+        }
+        if (currentToken == JsonToken.START_OBJECT) {
+            return true;
+        }
+        if (currentToken == JsonToken.END_ARRAY) {
             jsonParser.nextToken();
-            return jsonParser.hasCurrentToken();
         }
         return jsonParser.hasCurrentToken();
     }
 
-    @Override
-    public void beginArray() throws IOException {
-        JsonToken currentToken = jsonParser.getCurrentToken();
-        if (currentToken == null) {
-            jsonParser.nextToken();
-            jsonParser.nextToken();
-        } else {
-            jsonParser.nextToken();
-        }
-    }
-
-    @Override
-    public void endArray() throws IOException {
-        jsonParser.nextToken();
-    }
 
     @Override
     public void beginObject() throws IOException {
@@ -66,6 +55,7 @@ public class ReaderJsonJackson implements Reader {
 
     @Override
     public void skipField() throws IOException {
+        jsonParser.nextToken();
         jsonParser.nextToken();
     }
 

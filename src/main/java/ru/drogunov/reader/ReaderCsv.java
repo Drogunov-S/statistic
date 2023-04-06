@@ -33,45 +33,35 @@ public class ReaderCsv implements Reader{
     }
 
     @Override
-    public void beginArray() throws IOException {
-    }
-
-    @Override
-    public void endArray() throws IOException {
-
-    }
-
-    @Override
     public void beginObject() throws IOException {
         if (cashValues == null || cashValues.isEmpty()) {
             cashValues = Arrays.asList(reader.readLine().split(separator));
-//                cursor = cashValues.size() - 1;
         }
     }
 
     @Override
-    public void endObject() throws IOException {
+    public void endObject() {
         cashValues = null;
         cursor = -1;
     }
 
     @Override
-    public void skipField() throws IOException {
+    public void skipField() {
         cursor++;
     }
 
     @Override
-    public String nextName() throws IOException {
+    public String nextName() {
         return columns.get(++cursor);
     }
 
     @Override
-    public String getString() throws IOException {
+    public String getString() {
         return cashValues.get(cursor);
     }
 
     @Override
-    public Long getLong() throws IOException {
+    public Long getLong() {
         return Long.parseLong(cashValues.get(cursor));
     }
 

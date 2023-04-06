@@ -12,14 +12,23 @@ repositories {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
-    implementation("com.carrotsearch:hppc:0.9.1")
     implementation("org.apache.commons:commons-collections4:4.4")
-    implementation("com.google.code.gson:gson:2.10.1")
 }
 
 tasks.test {
     useJUnitPlatform()
 }
+
+tasks.jar {
+    manifest.attributes["Main-Class"] = "ru.drogunov.Main"
+    val dependencies = configurations
+            .runtimeClasspath
+            .get()
+            .map(::zipTree)
+    from(dependencies)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+

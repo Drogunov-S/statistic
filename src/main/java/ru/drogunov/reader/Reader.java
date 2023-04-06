@@ -7,10 +7,6 @@ public interface Reader {
 
     boolean hasNext() throws IOException;
 
-    void beginArray() throws IOException;
-
-    void endArray() throws IOException;
-
     void beginObject() throws IOException;
 
     void endObject() throws IOException;
